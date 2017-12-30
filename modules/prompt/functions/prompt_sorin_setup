@@ -54,7 +54,16 @@ function prompt_sorin_async_callback {
         zle && zle reset-prompt
       fi
       ;;
+    prompt_sorin_async_k8s)
+      read _k8s_cluster <<<"$3"
+      _prompt_sorin_k8s="$_k8s_cluster "
+      zle && zle reset-prompt
+      ;;
   esac
+}
+
+function prompt_sorin_async_k8s {
+  print "$(kubectl config get-contexts --no-headers=true | awk '/*/ {print $2}')"
 }
 
 function prompt_sorin_async_git {
@@ -79,6 +88,11 @@ function prompt_sorin_async_tasks {
 
   # Compute slow commands in the background.
   async_job prompt_sorin prompt_sorin_async_git "$PWD"
+
+  if [ -n "$(which kubectl)" ]
+  then
+    async_job prompt_sorin prompt_sorin_async_k8s
+  fi
 }
 
 function prompt_sorin_precmd {
@@ -163,7 +177,7 @@ function prompt_sorin_setup {
   PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_sorin_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
   RPROMPT='$python_info[virtualenv]${editor_info[overwrite]}%(?:: %F{1}'
   RPROMPT+=${show_return}
-  RPROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_sorin_git}'
+  RPROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_sorin_k8s}${_prompt_sorin_git}'
   SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
 
