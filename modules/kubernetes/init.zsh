@@ -38,3 +38,6 @@ alias kbl='kubectl logs'
 alias kblf='kubectl logs --follow'
 alias kbr='kubectl run'
 
+alias kb_clusters='kubectl config get-contexts'
+alias kb_switch_cluster='kubectl config use-context'
+alias kb_creds='kubectl config view'
