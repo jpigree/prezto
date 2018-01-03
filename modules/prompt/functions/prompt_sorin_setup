@@ -56,11 +56,18 @@ function prompt_sorin_async_callback {
       ;;
     prompt_sorin_async_k8s)
       read _k8s_cluster <<<"$3"
-      if [[  "$_k8s_cluster" =~ "dev" ]]
+
+      zstyle -s ':prezto:module:kubernetes' prod-clusters prod_regexp
+      if [ -z "$prod_regexp" ]
       then
-        _cluster_format='%F{4}'
-      else
+        zstyle -s ':prezto:module:kubernetes' prod-clusters-default prod_regexp
+      fi
+
+      if [ -n "$(echo "$_k8s_cluster" | grep -P "$prod_regexp")" ]
+      then
         _cluster_format='%F{1}'
+      else
+        _cluster_format='%F{4}'
       fi
 
       _prompt_sorin_k8s="%B$_cluster_format$_k8s_cluster%p%f%b "

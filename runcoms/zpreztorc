@@ -222,3 +222,12 @@ zstyle ':prezto:module:prompt' theme 'sorin'
 # before deleting or overwriting files. Set to 'no' to disable this safer
 # behavior.
 # zstyle ':prezto:module:utility' safe-ops 'yes'
+#
+
+#
+# Kubernetes
+#
+
+# Regular expression to identify prod cluster names.
+# If cluster is production format in red, else format in blue.
+# zstyle ':prezto:module:kubernetes' prod-clusters '^(?!.*dev).*$'

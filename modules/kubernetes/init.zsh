@@ -39,7 +39,9 @@ alias kblf='kubectl logs --follow'
 alias kbr='kubectl run'
 
 alias wkb='watch -n 1 kubectl'
-
 alias kb_clusters='kubectl config get-contexts'
 alias kb_switch_cluster='kubectl config use-context'
 alias kb_creds='kubectl config view'
+
+# Cluster name formatting
+zstyle ':prezto:module:kubernetes' prod-clusters-default '^(?!.*dev).*$'
