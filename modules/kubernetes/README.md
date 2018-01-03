@@ -17,4 +17,9 @@ functions and by exposing repository status information to prompts.
 - `kblf` is an alias for `kubectl logs --follow`.
 - `kbr` is an alias for `kubectl run`
 
+- `wkb` is an alias for `watch -n 1 kubectl`
+- `kb_clusters` is an alias for `kubectl config get-contexts`
+- `kb_switch_cluster` is an alias for `kubectl config use-context`
+- `kb_creds` is an alias for `kubectl config view`
+
 [1]: https://kubernetes.io/
