@@ -54,7 +54,7 @@ function prompt_sorin_async_callback {
         zle && zle reset-prompt
       fi
       ;;
-    prompt_sorin_async_k8s)
+    prompt_sorin_async_k8s_cluster)
       read _k8s_cluster <<<"$3"
 
       zstyle -s ':prezto:module:kubernetes' prod-clusters prod_regexp
@@ -70,14 +70,21 @@ function prompt_sorin_async_callback {
         _cluster_format='%F{4}'
       fi
 
-      _prompt_sorin_k8s="%B$_cluster_format$_k8s_cluster%p%f%b "
+      _prompt_sorin_k8s_cluster="%B$_cluster_format$_k8s_cluster%p%f%b "
       zle && zle reset-prompt
       ;;
+    prompt_sorin_async_k8s_ns)
+      read _k8s_ns <<<"$3"
+      _prompt_sorin_k8s_ns="%B%F{6}$_k8s_ns%p%f%b "
   esac
 }
 
-function prompt_sorin_async_k8s {
-  print "$(kubectl config get-contexts --no-headers=true | awk '/*/ {print $2}')"
+function prompt_sorin_async_k8s_cluster {
+  print "$(kubectl config current-context)"
+}
+
+function prompt_sorin_async_k8s_ns {
+  print "$(kubectl config view --minify -o jsonpath='{.contexts[0].context.namespace}')"
 }
 
 function prompt_sorin_async_git {
@@ -105,7 +112,8 @@ function prompt_sorin_async_tasks {
 
   if [ -n "$(which kubectl)" ]
   then
-    async_job prompt_sorin prompt_sorin_async_k8s
+    async_job prompt_sorin prompt_sorin_async_k8s_cluster
+    async_job prompt_sorin prompt_sorin_async_k8s_ns
   fi
 }
 
@@ -191,7 +199,7 @@ function prompt_sorin_setup {
   PROMPT='${SSH_TTY:+"%F{9}%n%f%F{7}@%f%F{3}%m%f "}%F{4}${_prompt_sorin_pwd}%(!. %B%F{1}#%f%b.)${editor_info[keymap]} '
   RPROMPT='$python_info[virtualenv]${editor_info[overwrite]}%(?:: %F{1}'
   RPROMPT+=${show_return}
-  RPROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_sorin_k8s}${_prompt_sorin_git}'
+  RPROMPT+='%f)${VIM:+" %B%F{6}V%f%b"}${_prompt_sorin_k8s_ns}${_prompt_sorin_k8s_cluster}${_prompt_sorin_git}'
   SPROMPT='zsh: correct %F{1}%R%f to %F{2}%r%f [nyae]? '
 }
 
