@@ -28,7 +28,11 @@ unset cache_file kubectl_command
 alias kb='kubectl'
 
 alias kba='kubectl apply'
-alias kbc='kubectl create'
+alias kbc='kubectl config'
+alias kbcg='kubectl config get-contexts'
+alias kbcu='kubectl config use-context'
+alias kbcv='kubectl config view'
+alias kbcr='kubectl create'
 alias kbD='kubectl delete'
 alias kbd='kubectl describe'
 alias kbe='kubectl exec'
@@ -39,9 +43,6 @@ alias kblf='kubectl logs --follow'
 alias kbr='kubectl run'
 
 alias wkb='watch -n 1 kubectl'
-alias kb_clusters='kubectl config get-contexts'
-alias kb_switch_cluster='kubectl config use-context'
-alias kb_creds='kubectl config view'
 
 kbn () {
   kubectl config set-context $(kubectl config current-context) --namespace=$1
