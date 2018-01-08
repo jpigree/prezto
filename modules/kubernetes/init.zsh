@@ -43,5 +43,9 @@ alias kb_clusters='kubectl config get-contexts'
 alias kb_switch_cluster='kubectl config use-context'
 alias kb_creds='kubectl config view'
 
+kbn () {
+  kubectl config set-context $(kubectl config current-context) --namespace=$1
+}
+
 # Cluster name formatting
 zstyle ':prezto:module:kubernetes' prod-clusters-default '^(?!.*dev).*$'
